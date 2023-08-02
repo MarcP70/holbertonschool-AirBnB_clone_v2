@@ -114,52 +114,35 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class with given parameters """
-        if not args:
+    def do_create(self, line):
+        """Update the function to allow for object creation with given parameters
+        Usage: create <Class name> <param 1> <param 2> <param 3>...
+        """
+        args = line.split(' ')
+        if line == "":
             print("** class name missing **")
-            return
-
-        args = args.split()
-        class_name = args[0]
-
-        if class_name not in HBNBCommand.classes:
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
-            return
-
-        # Extract key-value pairs from parameters and create a dictionary
-        kwargs_dict = {}
-        kwargs_dict['__class__'] = class_name
-        for arg in args[1:]:
-            parts = arg.split('=')
-            if len(parts) == 2:
-                key, value = parts
-                # Check if the value is a string, and handle underscores and quotes
-                if value.startswith('"') and value.endswith('"'):
-                    value = value[1:-1].replace('_', ' ')
-                # Convert the value to int if it's an integer
-                elif value.isdigit():
-                    value = int(value)
-                # Convert the value to float if it's a float
-                elif '.' in value and all(part.isdigit() for part in value.split('.', 1)):
-                    value = float(value)
-                # Skip any parameter that doesn't fit the required format
+        else:
+            var = eval(args[0])()
+            print(var.id)
+        for i in range(1, len(args)):
+            try:
+                arguments = args[i].split('=')
+                key = arguments[0]
+                value = arguments[1]
+                if value[0] == '"':
+                    value = value.replace('"', '')
+                    setattr(var, str(key), value.replace("_", " "))
                 else:
-                    continue
-                kwargs_dict[key] = value
-
-        # Add created_at and updated_at with the current time as strings
-        kwargs_dict['created_at'] = datetime.now().isoformat()
-        kwargs_dict['updated_at'] = datetime.now().isoformat()
-
-        # Create a new instance with the extracted key-value pairs
-        new_instance = HBNBCommand.classes[class_name](**kwargs_dict)
-
-        # Save the new instance
-        storage.new(new_instance)
-        storage.save()
-
-        print(new_instance.id)
+                    if "." in value:
+                        nb = float(value)
+                    else:
+                        nb = int(value)
+                    setattr(var, str(key), nb)
+            except Exception:
+                continue
+        var.save()
 
 
 
