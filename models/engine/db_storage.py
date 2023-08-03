@@ -2,6 +2,7 @@
 """ This file manage all the database """
 
 from os import getenv
+from models.base_model import Base
 from models.state import State
 from models.city import City
 from models.user import User
@@ -29,3 +30,6 @@ class DBSstorage:
                                       .format(my_user, my_psswd,
                                               my_host, my_datab),
                                       pool_pre_ping=True)
+
+        if envi == "test":
+                Base.metadata.drop_all(self.__engine)
