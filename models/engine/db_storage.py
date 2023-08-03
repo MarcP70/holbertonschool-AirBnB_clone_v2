@@ -12,14 +12,20 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
+
 class DBStorage:
-    """Writes a DBStorage class to manage object storage in a MySQL database."""
+    """ this class will contain all the manages of database
+    """
 
     __engine = None
     __session = None
 
     def __init__(self):
-        """Initializes the database engine (self.__engine) and session (self.__session)."""
+        """ this contain the definition of environ variables
+            the creation of engine and the reload that if
+            the test is equal to the environment should drop
+            down all the tables.
+        """
 
         envi = getenv('HBNB_ENV')
         my_user = getenv('HBNB_MYSQL_USER')
@@ -31,9 +37,10 @@ class DBStorage:
                                       .format(my_user, my_psswd,
                                               my_host, my_datab),
                                       pool_pre_ping=True)
+        self.reload()
 
-        if envi == "test":
-                Base.metadata.drop_all(self.__engine)
+        if 'test' == envi:
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """ this contain the filter that depend of the class
@@ -58,7 +65,7 @@ class DBStorage:
             dicti[k] = var
 
         return dicti
-    
+
     def new(self, obj):
         """ add the object to session """
 
@@ -80,3 +87,7 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(sessionmaker(bind=self.__engine,
                                                      expire_on_commit=False))()
+
+    def close(self):
+        """ This function close engines"""
+        self.__session.close()
