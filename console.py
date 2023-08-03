@@ -115,7 +115,8 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """Update the function to allow for object creation with given parameters
+        """Update the function to allow for object creation with given
+        parameters
         Usage: create <Class name> <param 1> <param 2> <param 3>...
         """
         args = arg.split(' ')
