@@ -2,6 +2,8 @@
 """ This file manage all the database """
 
 from os import getenv
+from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy import (create_engine)
 from models.base_model import Base
 from models.state import State
 from models.city import City
@@ -9,9 +11,8 @@ from models.user import User
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-from sqlalchemy import (create_engine)
 
-class DBSstorage:
+class DBStorage:
     """Writes a DBStorage class to manage object storage in a MySQL database."""
 
     __engine = None
@@ -33,3 +34,49 @@ class DBSstorage:
 
         if envi == "test":
                 Base.metadata.drop_all(self.__engine)
+
+    def all(self, cls=None):
+        """ this contain the filter that depend of the class
+            that is specified
+        """
+        dicti = {}
+        list_cls = []
+
+        if cls is None:
+            list_cls += self.__session.query(State).all()
+            list_cls += self.__session.query(City).all()
+            list_cls += self.__session.query(User).all()
+            list_cls += self.__session.query(Place).all()
+            list_cls += self.__session.query(Review).all()
+            list_cls += self.__session.query(Amenity).all()
+
+        else:
+            list_cls = self.__session.query(cls).all()
+
+        for var in list_cls:
+            k = type(var).__name__ + '.' + var.id
+            dicti[k] = var
+
+        return dicti
+    
+    def new(self, obj):
+        """ add the object to session """
+
+        self.__session.add(obj)
+
+    def save(self):
+        """ commit all the changes to session """
+
+        self.__session.commit()
+
+    def delete(self, obj=None):
+        """ delete from the session """
+
+        if obj:
+            self.__session.delete(obj)
+
+    def reload(self):
+        """ This function create all the tables and the session """
+        Base.metadata.create_all(self.__engine)
+        self.__session = scoped_session(sessionmaker(bind=self.__engine,
+                                                     expire_on_commit=False))()
