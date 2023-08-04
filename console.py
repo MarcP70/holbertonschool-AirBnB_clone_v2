@@ -226,10 +226,10 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             print([str(v) for v in storage.all().values()])
         elif arg in HBNBCommand.classes:
-            print([str(v) for v in storage.all(HBNBCommand.classes[arg]).values()])
+            print([str(v) for v in storage.all(HBNBCommand.classes[arg])
+                   .values()])
         else:
             print("** class doesn't exist **")
-
 
     def help_all(self):
         """ Help information for the all command """
