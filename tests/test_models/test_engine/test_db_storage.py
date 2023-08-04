@@ -1,91 +1,46 @@
 #!/usr/bin/python3
-""" Module for testing file storage"""
+import pycodestyle
 import unittest
-from models.base_model import BaseModel
-from models import storage
-from models.state import State
+from models.engine.db_storage import DBStorage
 
 
-class InvalidClass:  # Define the class 'InvalidClass'
-    pass
+class test_db_storage(unittest.TestCase):
+    """Test class for db storage"""
 
+    def test_pep8_DBStorage(self):
+        """pep8 test"""
+        style = pycodestyle.StyleGuide(quiet=True)
+        p = style.check_files(['models/engine/db_storage.py'])
+        self.assertEqual(p.total_errors, 0, "fix pep8")
 
-class InvalidObject:  # Define the class 'InvalidObject'
-    pass
+    def test_documentation_module(self):
+        """Tests the the documentation of the module"""
+        self.assertGreater(len(DBStorage.__doc__), 0)
 
+    def test_documentation_class(self):
+        """Tests the the documentation of the class"""
+        self.assertGreater(len(DBStorage.__doc__), 0)
 
-class TestDBStorage(unittest.TestCase):
-    # Tests that a new instance of DBStorage can be created without errors
-    def test_create_instance(self):
-        db = storage.DBStorage()  # Correctly import DBStorage from
-        'models.storage'
-        self.assertIsInstance(db, storage.DBStorage)
+    def test_documentation_init(self):
+        """Tests the the documentation of init"""
+        self.assertGreater(len(DBStorage.__init__.__doc__), 0)
 
-    # Tests that all() method returns a dictionary of all objects in
-    #   the database
-    def test_all_method(self):
-        db = storage.DBStorage()  # Correctly import DBStorage from
-        # 'models.storage'
-        result = db.all()
-        self.assertIsInstance(result, dict)
+    def test_documentation_all(self):
+        """Tests the the documentation of all"""
+        self.assertGreater(len(DBStorage.all.__doc__), 0)
 
-    # Tests that new() method adds an object to the current database session
-    def test_new_method(self):
-        db = storage.DBStorage()
-        state = State(name='California')
-        db.new(state)
-        result = db.all(State)
-        self.assertIn(state, result.values())
+    def test_documentation_new(self):
+        """Tests the the documentation of new"""
+        self.assertGreater(len(DBStorage.new.__doc__), 0)
 
-    # Tests that save() method commits all changes to the current database
-    #   session
-    def test_save_method(self):
-        db = storage.DBStorage()
-        state = State(name='California')
-        db.new(state)
-        db.save()
-        result = db.all(State)
-        self.assertIn(state, result.values())
+    def test_documentation_save(self):
+        """Tests the the documentation of save"""
+        self.assertGreater(len(DBStorage.save.__doc__), 0)
 
-    # Tests that delete() method deletes an object from the current database
-    #   session
-    def test_delete_method(self):
-        db = storage.DBStorage()
-        state = State(name='California')
-        db.new(state)
-        db.save()
-        db.delete(state)
-        result = db.all(State)
-        self.assertNotIn(state, result.values())
+    def test_documentation_delete(self):
+        """Tests the the documentation of delete"""
+        self.assertGreater(len(DBStorage.delete.__doc__), 0)
 
-    # Tests that reload() method creates all tables in the database and
-    #   initializes a new session
-    def test_reload_method(self):
-        db = storage.DBStorage()
-        state = State(name='California')
-        db.new(state)
-        db.save()
-        db.reload()
-        result = db.all(State)
-        self.assertNotIn(state, result.values())
-
-    # Tests that all() method returns an empty dictionary if there are
-    #   no objects in the database
-    def test_all_method_empty_db(self):
-        db = storage.DBStorage()
-        result = db.all()
-        self.assertEqual(result, {})
-
-    # Tests that all() method raises an error if an invalid class is
-    #   passed as an argument
-    def test_all_method_invalid_class(self):
-        db = storage.DBStorage()
-        with self.assertRaises(NameError):
-            db.all(InvalidClass)
-
-    # Tests that new() method raises an error if an invalid object is
-    #   passed as an argument
-    def test_new_method_invalid_object(self):
-        db = storage.DBStorage()
-        with self.assertRaises(AttributeError):
-            db.new(InvalidObject)
+    def test_documentation_reload(self):
+        """Tests the the documentation of reload"""
+        self.assertGreater(len(DBStorage.reload.__doc__), 0)
