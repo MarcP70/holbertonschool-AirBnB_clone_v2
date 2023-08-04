@@ -5,7 +5,7 @@ This script defines the DBStorage engine class.
 """
 import os
 from os import getenv
-from models.base_model import Base, BaseModel
+from models.base_model import Base
 from models.amenity import Amenity
 from models.city import City
 from models.place import Place
