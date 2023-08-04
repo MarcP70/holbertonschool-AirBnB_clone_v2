@@ -60,4 +60,4 @@ class FileStorage:
         """delete obj from __objects if it’s inside."""
         if obj is None:
             return
-        del(FileStorage.__objects["{}.{}".format(type(obj).__name__, obj.id)])
+        del (FileStorage.__objects["{}.{}".format(type(obj).__name__, obj.id)])
