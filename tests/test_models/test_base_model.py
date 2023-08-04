@@ -70,7 +70,7 @@ class test_basemodel(unittest.TestCase):
         """ """
         i = self.value()
         self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
-                         i.__dict__))
+                                                       i.__dict__))
 
     @unittest.skipIf(type_storage == "db", "Not for alchemy")
     def test_todict(self):
