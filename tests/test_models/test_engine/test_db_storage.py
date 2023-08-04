@@ -3,29 +3,29 @@
 import unittest
 from models.base_model import BaseModel
 from models import storage
-import os
 from models.state import State
-
-
-import unittest
 
 
 class InvalidClass:  # Define the class 'InvalidClass'
     pass
 
+
 class InvalidObject:  # Define the class 'InvalidObject'
     pass
+
 
 class TestDBStorage(unittest.TestCase):
     # Tests that a new instance of DBStorage can be created without errors
     def test_create_instance(self):
-        db = storage.DBStorage()
+        db = storage.DBStorage()  # Correctly import DBStorage from
+        'models.storage'
         self.assertIsInstance(db, storage.DBStorage)
 
     # Tests that all() method returns a dictionary of all objects in
     #   the database
     def test_all_method(self):
-        db = storage.DBStorage()
+        db = storage.DBStorage()  # Correctly import DBStorage from
+        # 'models.storage'
         result = db.all()
         self.assertIsInstance(result, dict)
 
