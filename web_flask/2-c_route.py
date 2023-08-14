@@ -34,15 +34,18 @@ def hbnb():
 @app.route('/c/<text>', strict_slashes=False)
 def c_text(text):
     """
-    Handle requests to the '/c/<text>' route and return a response with the modified text.
+    Handle requests to the '/c/<text>' route and return a response with
+    the modified text.
 
     Args:
         text (str): The text extracted from the URL path.
 
     Returns:
-        str: The modified text with underscores replaced by spaces and prefixed with 'C'.
+        str: The modified text with underscores replaced by spaces and
+        prefixed with 'C'.
     """
     return "C {}".format(text.replace('_', ' '))
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
