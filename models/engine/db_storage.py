@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """
 File to manage the database
 This script defines the DBStorage engine class.
