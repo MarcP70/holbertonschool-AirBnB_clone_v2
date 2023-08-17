@@ -19,8 +19,8 @@ def cities_by_states():
     Returns:
         str: Rendered template with states and cities.
     """
-    dico_states = storage.all(State).values()
-    states = sorted(dico_states, key=lambda states: states.name)
+    list_states = list(storage.all(State).values())
+    states = sorted(list_states, key=lambda states: states.name)
 
     return render_template('8-cities_by_states.html', states=states)
 
