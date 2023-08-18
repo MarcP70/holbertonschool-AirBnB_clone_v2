@@ -4,6 +4,7 @@ Starts a Flask web application.
 """
 from flask import Flask, render_template
 from models import storage
+from models.state import State
 
 app = Flask(__name__)
 
@@ -20,15 +21,10 @@ def cities_by_states():
     states = storage.all("State")
     return render_template("8-cities_by_states.html", states=states)
 
-@app.teardown_appcontext
-def close_session(self):
-    """
-    Closes the session used by the Flask application.
 
-    :param exception: The exception that occurred during the teardown process,
-        if any.
-    :return: None
-    """
+@app.teardown_appcontext
+def teardown(self):
+    """Closes the storage"""
     storage.close()
 
 
